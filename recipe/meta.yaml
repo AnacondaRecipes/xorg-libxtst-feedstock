@@ -3,7 +3,6 @@
 {% set name = "xorg-" ~ xorg_name %}
 {% set version = "1.2.5" %}
 {% set sha256 = "244ba6e1c5ffa44f1ba251affdfa984d55d99c94bb925a342657e5e7aaf6d39c" %}
-{% set am_version = "1.16" %} # keep synchronized with build.sh
 
 package:
   name: {{ name|lower }}
@@ -15,7 +14,9 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 3
+  # xorg-libxdmcp, libxcb, libx11, libice aren't available on Windows because their dependencies clash with m2/msys2 and mingw64/ucrt64 toolchains.
+  skip: true  # [win]
   run_exports:
     - {{ pin_subpackage(name|lower) }}
 
@@ -55,10 +56,12 @@ test:
 
 about:
   home: https://www.x.org/
+  dev_url: https://gitlab.freedesktop.org/xorg/lib/libxtst
+  doc_url: https://gitlab.freedesktop.org/xorg/lib/libxtst
   license: MIT
   license_family: MIT
   license_file: COPYING
-  summary: 'The X.org X11 test-event library.'
+  summary: The X.org X11 test-event library.
 
 extra:
   recipe-maintainers:
