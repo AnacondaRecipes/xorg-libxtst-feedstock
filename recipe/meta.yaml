@@ -11,7 +11,7 @@ source:
   sha256: 244ba6e1c5ffa44f1ba251affdfa984d55d99c94bb925a342657e5e7aaf6d39c
 
 build:
-  number: 3
+  number: 4
   # xorg-libxdmcp, libxcb, libx11, libice aren't available on Windows because their dependencies clash with m2/msys2 and mingw64/ucrt64 toolchains.
   skip: true  # [win]
   run_exports:
