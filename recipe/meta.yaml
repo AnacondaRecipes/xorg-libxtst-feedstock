@@ -1,8 +1,5 @@
-{% set xorg_name = "libXtst" %}
-{% set xorg_category = "lib" %}
-{% set name = "xorg-" ~ xorg_name %}
+{% set name = "xorg-libXtst" %}
 {% set version = "1.2.5" %}
-{% set sha256 = "244ba6e1c5ffa44f1ba251affdfa984d55d99c94bb925a342657e5e7aaf6d39c" %}
 
 package:
   name: {{ name|lower }}
@@ -10,11 +7,11 @@ package:
 
 source:
   fn: {{ name }}-{{ version }}.tar.gz
-  url: https://www.x.org/releases/individual/{{ xorg_category }}/{{ xorg_name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  url: https://www.x.org/releases/individual/lib/{{ name.split('-')[1] }}-{{ version }}.tar.gz
+  sha256: 244ba6e1c5ffa44f1ba251affdfa984d55d99c94bb925a342657e5e7aaf6d39c
 
 build:
-  number: 3
+  number: 4
   # xorg-libxdmcp, libxcb, libx11, libice aren't available on Windows because their dependencies clash with m2/msys2 and mingw64/ucrt64 toolchains.
   skip: true  # [win]
   run_exports:
@@ -22,37 +19,26 @@ build:
 
 requirements:
   build:
-    - m2-autoconf                  # [win]
-    - m2-automake{{ am_version }}  # [win]
-    - m2-libtool                   # [win]
-    - pkg-config                   # [unix]
-    - m2-pkg-config                # [win]
-    - gnuconfig                    # [unix]
-    - m2-base                      # [win]
-    - make                         # [unix]
-    - m2-make                      # [win]
-    - {{ compiler("c") }}          # [unix]
-    - {{ compiler("m2w64_c") }}    # [win]
-    - autoconf                     # [unix]
-    - automake                     # [unix]
-    - gettext                      # [unix]
-    - libtool                      # [unix]
+    - {{ stdlib('c') }}
+    - {{ compiler('c') }}
+    - pkg-config
+    - gnuconfig
+    - make
+    - autoconf
+    - automake
+    - gettext
+    - libtool
   host:
-    - xorg-xorgproto
-    - xorg-libx11
-    - xorg-libxext
-    - xorg-libxi
-    - xorg-util-macros
+    - xorg-xorgproto {{ xorg_xorgproto }}
+    - xorg-libx11 {{ xorg_libx11 }}
+    - xorg-libxext {{ xorg_libxext }}
+    - xorg-libxi {{ xorg_libxi }}
+    - xorg-util-macros ==1.20.2
 
 test:
   commands:
-    {% set lib_idents = [ "Xtst" ] %}
-    {% for lib_ident in lib_idents %}
-    - test -f $PREFIX/lib/lib{{ lib_ident }}.dylib  # [osx]
-    - test -f $PREFIX/lib/lib{{ lib_ident }}.so  # [linux]
-    - if not exist %PREFIX%/Library/lib/lib{{ lib_ident }}.dll.a exit /b 1  # [win]
-    - if not exist %PREFIX%/Library/bin/msys-{{ lib_ident }}-*.dll exit /b 1  # [win]
-    {% endfor %}
+    - test -f $PREFIX/lib/libXtst.dylib  # [osx]
+    - test -f $PREFIX/lib/libXtst.so     # [linux]
 
 about:
   home: https://www.x.org/
@@ -62,6 +48,7 @@ about:
   license_family: MIT
   license_file: COPYING
   summary: The X.org X11 test-event library.
+  description: The X.org X11 test-event library
 
 extra:
   recipe-maintainers:
