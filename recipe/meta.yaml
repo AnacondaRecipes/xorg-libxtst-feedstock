@@ -1,5 +1,5 @@
 {% set name = "xorg-libXtst" %}
-{% set version = "1.2.5" %}
+{% set version = "1.2.6" %}
 
 package:
   name: {{ name|lower }}
@@ -8,10 +8,10 @@ package:
 source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://www.x.org/releases/individual/lib/{{ name.split('-')[1] }}-{{ version }}.tar.gz
-  sha256: 244ba6e1c5ffa44f1ba251affdfa984d55d99c94bb925a342657e5e7aaf6d39c
+  sha256: f30f2d4f8370077de9f35220a539bf34c042ca02a55669a4d8f345c661ce7839
 
 build:
-  number: 4
+  number: 0
   # xorg-libxdmcp, libxcb, libx11, libice aren't available on Windows because their dependencies clash with m2/msys2 and mingw64/ucrt64 toolchains.
   skip: true  # [win]
   run_exports:
